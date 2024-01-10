@@ -1,31 +1,35 @@
 var board = [];
 var rows = 8;
 var columns = 8;
+var totalTiles = rows * columns;
 
 var minesCount = Math.floor(Math.random() * 63);
-var minesLocation = []; // "2-2", "3-4", "2-1"
+var minesLocation = [];
 
-var totalTiles = 64;
-var unclickedTiles = totalTiles;
-var tilesClicked = 0; //goal to click all tiles except the ones containing mines
+var tilesClicked = 0;
 var tilesFlagged = 0;
 var flagEnabled = false;
 
 var gameOver = false;
 
-window.onload = function() {
+window.onload = function () {
     startGame();
+    playBombSound();
+}
+
+function playBombSound() {
+    var bombSound = document.getElementById("bomb-sound");
+    bombSound.play();
+}
+
+function playGameOverSound() {
+    var gameOverSound = document.getElementById("game-over-sound");
+    gameOverSound.play();
 }
 
 function setMines() {
-    // minesLocation.push("2-2");
-    // minesLocation.push("2-3");
-    // minesLocation.push("5-6");
-    // minesLocation.push("3-4");
-    // minesLocation.push("1-1");
-
     let minesLeft = minesCount;
-    while (minesLeft > 0) { 
+    while (minesLeft > 0) {
         let r = Math.floor(Math.random() * rows);
         let c = Math.floor(Math.random() * columns);
         let id = r.toString() + "-" + c.toString();
@@ -37,17 +41,14 @@ function setMines() {
     }
 }
 
-
 function startGame() {
     document.getElementById("mines-count").innerText = minesCount;
     document.getElementById("flag-button").addEventListener("click", setFlag);
     setMines();
 
-    //populate our board
     for (let r = 0; r < rows; r++) {
         let row = [];
         for (let c = 0; c < columns; c++) {
-            //<div id="0-0"></div>
             let tile = document.createElement("div");
             tile.id = r.toString() + "-" + c.toString();
             tile.addEventListener("click", clickTile);
@@ -56,9 +57,8 @@ function startGame() {
         }
         board.push(row);
     }
-
-    // console.log(board);
 }
+
 
 function setFlag() {
     if (flagEnabled) {
@@ -92,14 +92,14 @@ function clickTile() {
 
     if (minesLocation.includes(tile.id)) {  
         gameOver = true;
-        
+        document.body.style.backgroundColor = "red"; 
         revealMines();
         setTimeout(function () {
-        alert("Game Over");
+            playGameOverSound();  
+            alert("Game Over");
         }, 1);
-            return;
-        }
-
+        return;
+    }
     let coords = tile.id.split("-"); // "0-0" -> ["0", "0"]
     let r = parseInt(coords[0]);
     let c = parseInt(coords[1]);
@@ -110,28 +110,37 @@ function clickTile() {
     console.log("tilesClicked: " + tilesClicked);
     console.log("unclickedTiles: " + unclickedTiles);
     
-    if(tilesClicked == rows * columns - minesCount) {
+    if (tilesClicked === rows * columns - minesCount) {
         document.getElementById("mines-count").innerText = "Cleared";
         gameOver = true;
+        document.body.style.backgroundColor = "green";
         setTimeout(function () {
-        alert("Win!");
+            playWinSound();     
+            alert("Win!");
         }, 1);
-            return;
-        }
-
+        return;
+    }
 }
 
+function playWinSound() {
+    var winSound = document.getElementById("win-sound");
+    winSound.play();
+}
+
+
 function revealMines() {
-    for (let r= 0; r < rows; r++) {
+    playGameOverSound();  // Play game over sound
+    for (let r = 0; r < rows; r++) {
         for (let c = 0; c < columns; c++) {
             let tile = board[r][c];
             if (minesLocation.includes(tile.id)) {
                 tile.innerText = "💣";
-                tile.style.backgroundColor = "red";                
+                tile.style.backgroundColor = "red";
             }
         }
     }
 }
+
 
 function checkMine(r, c) {
     if (r < 0 || r >= rows || c < 0 || c >= columns) {

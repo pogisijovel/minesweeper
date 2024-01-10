@@ -1,22 +1,32 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Minesweeper</title>
-        <link rel="stylesheet" href="miners.css">
-        <script src="miners.js"></script>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="miners.css">
+    <script src="miners.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <audio id="bomb-sound" preload="auto">
+        <source src="bomb.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="game-over-sound" preload="auto">
+        <source src="game_over.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="win-sound" preload="auto">
+        <source src="win.mp3" type="audio/mpeg">
+    </audio>
+    
+</head>
 
-    <body>
-        <h1>Mines: <span id="mines-count">0</span></h1>
-        <h1>Tiles flagged: <span id="tiles-flagged">0</span></h1>
-        <div id="board"></div>
-        <br>
-        <button id="flag-button">🚩</button>
-        <br> <br> 
-        <button id = "reload-button", onClick="window.location.reload();">⟳
-        </button>
-    </body>
+<body>
+    <h1>Mines: <span id="mines-count">0</span></h1>
+    <h1>Tiles flagged: <span id="tiles-flagged">0</span></h1>
+    <div id="board"></div>
+    <br>
+    <button id="flag-button">🚩</button>
+    <br><br>
+    <button id="reload-button" onclick="window.location.reload();">⟳</button>
+</body>
 
 </html>
