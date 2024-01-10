@@ -81,8 +81,7 @@ function clickTile() {
         if (tile.innerText == "") {
             tile.innerText = "🚩";
             tilesFlagged += 1;
-        }
-        else if (tile.innerText == "🚩") {
+        } else if (tile.innerText == "🚩") {
             tile.innerText = "";
             tilesFlagged -= 1;
         }
@@ -90,12 +89,12 @@ function clickTile() {
         return;
     }
 
-    if (minesLocation.includes(tile.id)) {  
+    if (minesLocation.includes(tile.id)) {
         gameOver = true;
-        document.body.style.backgroundColor = "red"; 
+        document.body.style.backgroundColor = "red";
         revealMines();
         setTimeout(function () {
-            playGameOverSound();  
+            playGameOverSound();
             alert("Game Over");
         }, 1);
         return;
@@ -109,17 +108,24 @@ function clickTile() {
     console.log("totalTiles: " + totalTiles);
     console.log("tilesClicked: " + tilesClicked);
     console.log("unclickedTiles: " + unclickedTiles);
-    
+
     if (tilesClicked === rows * columns - minesCount) {
         document.getElementById("mines-count").innerText = "Cleared";
         gameOver = true;
         document.body.style.backgroundColor = "green";
         setTimeout(function () {
-            playWinSound();     
+            playWinSound(); // Play win sound
             alert("Win!");
         }, 1);
         return;
     }
+    playPopSound();
+}
+
+
+function playPopSound() {
+    var popSound = document.getElementById("pop-sound");
+    popSound.play();
 }
 
 function playWinSound() {
